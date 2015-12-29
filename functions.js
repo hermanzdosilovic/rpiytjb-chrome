@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', function(e) {
     }
 
 
-    $('#play').click(function() {
+    $('#start').click(function() {
       $.ajax({
-        url: "http://localhost:3000/api/play",
+        url: "http://gitac.local:8000/api/start",
         type: "GET",
         data: {
           url: url
@@ -18,8 +18,26 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
     $('#stop').click(function() {
       $.ajax({
-        url: "http://localhost:3000/api/stop",
+        url: "http://gitac.local:8000/api/stop",
         type: "GET"
+      });
+    });
+
+
+    $('#pause').click(function() {
+      $.ajax({
+        url: "http://gitac.local:8000/api/pause",
+        type: "GET"
+      });
+    });
+
+    $('#volume').on("input change", function() {
+      $.ajax({
+        url: "http://gitac.local:8000/api/pause",
+        type: "GET",
+        data: {
+          value: this.value
+        }
       });
     });
   });

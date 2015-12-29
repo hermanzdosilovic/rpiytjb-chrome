@@ -1,4 +1,7 @@
-.control {
-  width: 32px;
-  height: 32px;
+button, input {
+  margin: 2px;
+}
+
+input {
+  width: 167px;
 }
