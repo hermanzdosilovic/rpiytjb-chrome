@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
     $('#volume').on("input change", function() {
       $.ajax({
-        url: "http://gitac.local:8000/api/pause",
+        url: "http://gitac.local:8000/api/volume",
         type: "GET",
         data: {
           value: this.value
