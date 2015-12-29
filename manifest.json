@@ -4,15 +4,11 @@
   "description": "Raspberry Pi YouTube Jukebox for LAN.",
   "version": "1.0",
   "browser_action": {
-    "default_icon": "icon/20.png"
-  },
-  "background": {
-    "scripts": [
-      "background.js", "jquery.js"
-    ],
-    "persistent": false
+    "default_icon": "icon/20.png",
+    "default_popup": "page.html"
   },
   "permissions": [
+    "activeTab",
     "https://www.youtube.com/*",
     "http://gitac.local:8000/*"
   ],
