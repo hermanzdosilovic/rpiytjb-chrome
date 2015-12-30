@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function(e) {
-  var BASE_URL = "http://localhost:3000/";
+  var BASE_URL = "http://gitac.local:8000/";
+
+  chrome.storage.sync.get('volume', function(result) {
+    $('#volume').val(result.volume);
+  });
 
   getCurrentTabUrl(function(url) {
     if (url.match("https://www.youtube.com/") === null) {
@@ -36,9 +40,15 @@ document.addEventListener('DOMContentLoaded', function(e) {
     $('#volume').on("input change", function() {
       $.ajax({
         url: BASE_URL + "/api/volume",
-        type: "GET",
+        type: "POST",
         data: {
           value: this.value
+        },
+        success:function(response) {
+          var volume = response.response.volume;
+          chrome.storage.sync.set({'volume': volume}, function() {
+            $('#volume').val(volume);
+          });
         }
       });
     });
