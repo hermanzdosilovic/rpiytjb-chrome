@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function(e) {
+  var BASE_URL = "http://localhost:3000/";
+
   getCurrentTabUrl(function(url) {
     if (url.match("https://www.youtube.com/") === null) {
       window.close();
@@ -8,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
     $('#start').click(function() {
       $.ajax({
-        url: "http://gitac.local:8000/api/start",
+        url: BASE_URL + "/api/start",
         type: "GET",
         data: {
           url: url
@@ -18,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
     $('#stop').click(function() {
       $.ajax({
-        url: "http://gitac.local:8000/api/stop",
+        url: BASE_URL + "/api/stop",
         type: "GET"
       });
     });
@@ -26,14 +28,14 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
     $('#pause').click(function() {
       $.ajax({
-        url: "http://gitac.local:8000/api/pause",
+        url: BASE_URL + "/api/pause",
         type: "GET"
       });
     });
 
     $('#volume').on("input change", function() {
       $.ajax({
-        url: "http://gitac.local:8000/api/volume",
+        url: BASE_URL + "/api/volume",
         type: "GET",
         data: {
           value: this.value
