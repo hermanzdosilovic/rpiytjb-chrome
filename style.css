@@ -3,7 +3,7 @@ button, input {
   outline: none;
 }
 
-.controls {
+.inline {
   display: inline-block;
   white-space: nowrap;
 }
@@ -12,3 +12,7 @@ button, input {
   min-width: 32px;
 }
 
+#status {
+  width: 15px;
+  height: 15px;
+}

@@ -6,16 +6,22 @@
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <div class="controls">
+    <div class="inline">
+      <h4 class="inline">Now playing:&nbsp</h4><p class="inline" id="now"></p>
+      <img class="inline" src="images/ok.png" id="status"/>
+    </div>
+
+    <div class="inline">
       <button type="button" id="start">Start</button>
       <button type="button" id="pause">Play/Pause</button>
       <button type="button" id="stop">Stop</button>
     </div>
-    <div class="controls">
-      <div class="controls">
+
+    <div class="inline">
+      <div class="inline">
         <input type="range" id="volume" min="0" max="100"/>
       </div>
-      <div class="controls">
+      <div class="inline">
         <p id="volume_value"></p>
       </div>
     </div>

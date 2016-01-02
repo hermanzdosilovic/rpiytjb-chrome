@@ -8,9 +8,7 @@
     "default_popup": "page.html"
   },
   "permissions": [
-    "activeTab", "storage",
-    "https://www.youtube.com/*",
-    "http://gitac.local:8000/*",
+    "activeTab", "storage", "<all_urls>"
   ],
   "icons": {
     "16": "icon/16.png",
