@@ -1,7 +1,14 @@
 button, input {
   margin: 2px;
+  outline: none;
 }
 
-input {
-  width: 167px;
+.controls {
+  display: inline-block;
+  white-space: nowrap;
 }
+
+#volume_value {
+  min-width: 32px;
+}
+

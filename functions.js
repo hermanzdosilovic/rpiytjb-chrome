@@ -1,23 +1,25 @@
 document.addEventListener('DOMContentLoaded', function(e) {
-  var BASE_URL = "http://gitac.local:8000/";
+  var BASE_URL = "http://gitac.local:8000";
 
   chrome.storage.sync.get('volume', function(result) {
     $('#volume').val(result.volume);
+    $('#volume_value').html(result.volume + "%");
   });
+
 
   getCurrentTabUrl(function(url) {
     if (url.match("https://www.youtube.com/") === null) {
-      window.close();
-      return;
+      $('#start').hide();
     }
 
-
+    debugger;
     $('#start').click(function() {
       $.ajax({
         url: BASE_URL + "/api/start",
         type: "GET",
         data: {
-          url: url
+          url: url,
+          volume: $('#volume').val()
         }
       });
     });
@@ -38,17 +40,13 @@ document.addEventListener('DOMContentLoaded', function(e) {
     });
 
     $('#volume').on("input change", function() {
+      $('#volume_value').html(this.value + "%");
+      chrome.storage.sync.set({'volume': this.value}, null);
       $.ajax({
         url: BASE_URL + "/api/volume",
         type: "POST",
         data: {
           value: this.value
-        },
-        success:function(response) {
-          var volume = response.response.volume;
-          chrome.storage.sync.set({'volume': volume}, function() {
-            $('#volume').val(volume);
-          });
         }
       });
     });

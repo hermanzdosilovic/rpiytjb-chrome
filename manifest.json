@@ -10,7 +10,7 @@
   "permissions": [
     "activeTab", "storage",
     "https://www.youtube.com/*",
-    "http://gitac.local:8000/*"
+    "http://gitac.local:8000/*",
   ],
   "icons": {
     "16": "icon/16.png",
