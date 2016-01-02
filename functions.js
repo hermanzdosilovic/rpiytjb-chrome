@@ -1,26 +1,57 @@
-document.addEventListener('DOMContentLoaded', function(e) {
-  var BASE_URL = "http://localhost:3000";
 
-  chrome.storage.sync.get('volume', function(result) {
-    $('#volume').val(result.volume);
-    $('#volume_value').html(result.volume + "%");
+document.addEventListener('DOMContentLoaded', function(e) {
+  // chrome.storage.sync.clear();
+
+  chrome.storage.sync.get('jukebox_url', function(result) {
+    if (typeof result.jukebox_url === "undefined") {
+      setup_dialog();
+    } else {
+      main_dialog(result.jukebox_url);
+    }
+  });
+});
+
+function setup_dialog() {
+  $('.setup').show();
+  $('.main').hide();
+
+  chrome.storage.sync.get('jukebox_url', function(result) {
+    if (typeof result.jukebox_url === "undefined") {
+      $('#jukebox_url_input').val('');
+    } else {
+      $('#jukebox_url_input').val(result.jukebox_url);
+    }
   });
 
+  $('#save').click(function() {
+    BASE_URL = $('#jukebox_url_input').val();
+    chrome.storage.sync.set({'jukebox_url': BASE_URL}, null);
+    main_dialog(BASE_URL);
+  });
+}
 
-  $('#status').attr('src', 'images/spinner.gif');
-  $.ajax({
-    url: BASE_URL + "/api/now",
-    type: "GET",
-    success: function(response) { on_success(response) },
-    error: function(jqXHR, exception) { on_error(jqXHR, exception) }
+function main_dialog(BASE_URL) {
+  $('.setup').hide();
+  $('.main').show();
+
+  chrome.storage.sync.get('volume', function(result) {
+    var volume;
+    if (typeof result.volume === "undefined") {
+      volume = 50;
+    } else {
+      volume = result.volume;
+    }
+    $('#volume').val(volume);
+    $('#volume_value').html(volume + "%");
   });
 
   getCurrentTabUrl(function(url) {
-    if (url.match("https://www.youtube.com/") === null) {
+    if (url.match("^https://www.youtube.com/") === null) {
       $('#start').hide();
     }
 
     $('#start').click(function() {
+      $(this).prop('disabled', true);
       $('#status').attr('src', 'images/spinner.gif');
       $.ajax({
         url: BASE_URL + "/api/start",
@@ -29,8 +60,14 @@ document.addEventListener('DOMContentLoaded', function(e) {
           url: url,
           volume: $('#volume').val()
         },
-        success: function(response) { on_success(response) },
-        error: function(jqXHR, exception) { on_error(jqXHR, exception) }
+        success: function(response) {
+          $('#start').prop('disabled', false);
+          on_success(response);
+        },
+        error: function(jqXHR, exception) {
+          $('#start').prop('disabled', false);
+          on_error(jqXHR, exception);
+        }
       });
     });
 
@@ -69,7 +106,19 @@ document.addEventListener('DOMContentLoaded', function(e) {
       });
     });
   });
-});
+
+  // fetch now playing info
+  $('#status').attr('src', 'images/spinner.gif');
+  $.ajax({
+    url: BASE_URL + "/api/now",
+    type: "GET",
+    success: function(response) { on_success(response) },
+    error: function(jqXHR, exception) { on_error(jqXHR, exception) }
+  });
+
+  $('#settings').click(setup_dialog);
+  $('#jukebox_url').html(BASE_URL);
+}
 
 function on_success(response) {
   console.log("Success:");
