@@ -136,7 +136,10 @@ function on_success(response) {
   if (response.response === null) {
     $('#now').html("nothing");
   } else {
-    $('#now').html(response.response.title);
+    $('#now').html(
+      "<a href=\"" + response.response.video_url + "\" target=\"blank\">"
+      + response.response.title + "</a>"
+    );
   }
   $('#status').attr('src', 'images/success.png');
 }
