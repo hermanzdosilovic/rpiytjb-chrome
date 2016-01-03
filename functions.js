@@ -101,7 +101,11 @@ function main_dialog(BASE_URL) {
       });
     });
 
-    $('#volume').on("input change", function() {
+    $('#volume').on('input change', function() {
+      $('#volume_value').html(this.value + "%");
+    });
+
+    $('#volume').mouseup(function() {
       $('#volume_value').html(this.value + "%");
       chrome.storage.sync.set({'volume': this.value}, null);
       $('#status').attr('src', 'images/spinner.gif');
