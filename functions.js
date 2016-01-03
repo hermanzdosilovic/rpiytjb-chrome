@@ -81,6 +81,16 @@ function main_dialog(BASE_URL) {
       });
     });
 
+    $('#force_stop').click(function() {
+      $('#status').attr('src', 'images/spinner.gif');
+      $.ajax({
+        url: BASE_URL + "/api/force_stop",
+        type: "GET",
+        success: function(response) { on_success(response) },
+        error: function(jqXHR, exception) { on_error(jqXHR, exception) }
+      });
+    });
+
     $('#pause').click(function() {
       $('#status').attr('src', 'images/spinner.gif');
       $.ajax({
@@ -126,7 +136,7 @@ function on_success(response) {
   if (response.response === null) {
     $('#now').html("nothing");
   } else {
-    $('#now').html(response.response.video.title);
+    $('#now').html(response.response.title);
   }
   $('#status').attr('src', 'images/success.png');
 }
