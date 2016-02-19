@@ -62,7 +62,7 @@ function main_dialog(BASE_URL) {
         },
         success: function(response) {
           $('#start').prop('disabled', false);
-          on_success(response);
+          on_success(response, BASE_URL);
         },
         error: function(jqXHR, exception) {
           $('#start').prop('disabled', false);
@@ -76,7 +76,7 @@ function main_dialog(BASE_URL) {
       $.ajax({
         url: BASE_URL + "/api/stop",
         type: "GET",
-        success: function(response) { on_success(response) },
+        success: function(response) { on_success(response, BASE_URL) },
         error: function(jqXHR, exception) { on_error(jqXHR, exception) }
       });
     });
@@ -86,7 +86,7 @@ function main_dialog(BASE_URL) {
       $.ajax({
         url: BASE_URL + "/api/force_stop",
         type: "GET",
-        success: function(response) { on_success(response) },
+        success: function(response) { on_success(response, BASE_URL) },
         error: function(jqXHR, exception) { on_error(jqXHR, exception) }
       });
     });
@@ -96,7 +96,7 @@ function main_dialog(BASE_URL) {
       $.ajax({
         url: BASE_URL + "/api/pause",
         type: "GET",
-        success: function(response) { on_success(response) },
+        success: function(response) { on_success(response, BASE_URL) },
         error: function(jqXHR, exception) { on_error(jqXHR, exception) }
       });
     });
@@ -115,7 +115,7 @@ function main_dialog(BASE_URL) {
         data: {
           value: this.value
         },
-        success: function(response) { on_success(response) },
+        success: function(response) { on_success(response, BASE_URL) },
         error: function(jqXHR, exception) { on_error(jqXHR, exception) }
       });
     });
@@ -126,7 +126,7 @@ function main_dialog(BASE_URL) {
   $.ajax({
     url: BASE_URL + "/api/now",
     type: "GET",
-    success: function(response) { on_success(response) },
+    success: function(response) { on_success(response, BASE_URL) },
     error: function(jqXHR, exception) { on_error(jqXHR, exception) }
   });
 
@@ -134,12 +134,13 @@ function main_dialog(BASE_URL) {
   $('#jukebox_url').html(BASE_URL);
 }
 
-function on_success(response) {
+function on_success(response, BASE_URL) {
   console.log("Success:");
   console.log(response);
   if (response.response === null) {
     $('#now').html("nothing");
   } else {
+    update_position(BASE_URL);
     $('#now').html(
       "<a href=\"" + response.response.video_url + "\" target=\"blank\">"
       + response.response.title + "</a>"
@@ -154,6 +155,26 @@ function on_error(jqXHR, exception) {
   console.log(exception);
   $('#now').html("nothing");
   $('#status').attr('src', 'images/fail.png');
+}
+
+function update_position(BASE_URL) {
+  $.ajax({
+    url: BASE_URL + "/api/position",
+    type: "GET",
+    success: function(response) {
+      $("#position").html(response.response.position);
+      setTimeout(update_position, 500, BASE_URL);
+    },
+    error: function(jqXHR, exception) {
+      $("#position").html("");
+    }
+  });
+}
+
+function pad(num, size) {
+    var s = num + "";
+    while (s.length < size) s = "0" + s;
+    return s;
 }
 
 function getCurrentTabUrl(callback) {
