@@ -139,6 +139,7 @@ function on_success(response, BASE_URL) {
   console.log(response);
   if (response.response === null) {
     $('#now').html("nothing");
+    $("#position").html("");
   } else {
     update_position(BASE_URL);
     $('#now').html(
@@ -154,6 +155,7 @@ function on_error(jqXHR, exception) {
   console.log(jqXHR);
   console.log(exception);
   $('#now').html("nothing");
+  $("#position").html("");
   $('#status').attr('src', 'images/fail.png');
 }
 
